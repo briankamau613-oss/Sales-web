@@ -1,0 +1,2284 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLEXFIT — Tops · Tights · Shorts</title>
+    <meta name="description" content="FLEXFIT is a modern fashion brand specializing in premium tops, tights, and shorts. Move with confidence.">
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ─── CSS Variables & Base ─── */
+        :root {
+            --brand: #1a1a2e;
+            --brand-light: #2d2d4a;
+            --accent: #e94560;
+            --accent-hover: #d63850;
+            --gold: #f5c518;
+            --bg-light: #f8f7f4;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b6b7b;
+            --border: #e8e6e1;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.10);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'Playfair Display', serif;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            background: var(--bg-light);
+            line-height: 1.6;
+        }
+        /* ─── Scrollbar ─── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c5d0;
+            border-radius: 8px;
+        }
+        /* ─── Utilities ─── */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.45s ease;
+        }
+        .page-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 600px;
+            }
+        }
+        .slide-down {
+            animation: slideDown 0.4s ease forwards;
+            overflow: hidden;
+        }
+        /* ─── Nav ─── */
+        .nav-blur {
+            backdrop-filter: blur(18px) saturate(1.2);
+            -webkit-backdrop-filter: blur(18px) saturate(1.2);
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        .nav-link {
+            position: relative;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.01em;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--brand);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 70%;
+            height: 2px;
+            background: var(--accent);
+            transition: transform 0.3s ease;
+            border-radius: 4px;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+        .cart-badge {
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            border: 2px solid #fff;
+            line-height: 1;
+        }
+        /* ─── Hero ─── */
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.65) 0%, rgba(26, 26, 46, 0.20) 70%, transparent 100%);
+        }
+        /* ─── Product Card ─── */
+        .product-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+        .product-card .img-wrap {
+            aspect-ratio: 1/1.15;
+            overflow: hidden;
+            background: #f0eeeb;
+            position: relative;
+        }
+        .product-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .product-card:hover .img-wrap img {
+            transform: scale(1.06);
+        }
+        .product-card .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            padding: 4px 12px;
+            border-radius: 40px;
+            background: var(--accent);
+            color: #fff;
+            text-transform: uppercase;
+        }
+        .product-card .badge.pre-order-badge {
+            background: var(--gold);
+            color: #1a1a2e;
+        }
+        /* ─── Categories ─── */
+        .cat-card {
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+        .cat-card:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+        .cat-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .cat-card:hover img {
+            transform: scale(1.08);
+        }
+        .cat-card .cat-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 16px 16px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.02em;
+        }
+        /* ─── Modal ─── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: var(--radius);
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px 28px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 1.6rem;
+            line-height: 1;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .modal-close:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+        /* ─── Cart Sidebar ─── */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 440px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -8px 0 40px rgba(0, 0, 0, 0.08);
+            z-index: 1100;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-sidebar.open {
+            transform: translateX(0);
+        }
+        .cart-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 1099;
+            display: none;
+        }
+        .cart-backdrop.open {
+            display: block;
+        }
+        /* ─── Buttons ─── */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--brand);
+            color: #fff;
+            font-family: var(--font-sans);
+        }
+        .btn-primary:hover {
+            background: var(--brand-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(26, 26, 46, 0.15);
+        }
+        .btn-accent {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-accent:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 8px 24px rgba(233, 69, 96, 0.25);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--brand);
+            color: var(--brand);
+        }
+        .btn-outline:hover {
+            background: var(--brand);
+            color: #fff;
+        }
+        .btn-sm {
+            padding: 8px 18px;
+            font-size: 0.8rem;
+        }
+        .btn-xs {
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            border-radius: 40px;
+        }
+        /* ─── Form ─── */
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background: #fff;
+            color: var(--text-dark);
+        }
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--brand);
+            box-shadow: 0 0 0 4px rgba(26, 26, 46, 0.06);
+        }
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: block;
+        }
+        /* ─── Filter pills ─── */
+        .filter-pill {
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-muted);
+            font-family: var(--font-sans);
+        }
+        .filter-pill:hover,
+        .filter-pill.active {
+            background: var(--brand);
+            color: #fff;
+            border-color: var(--brand);
+        }
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 24px 18px;
+                border-radius: 12px;
+            }
+            .cart-sidebar {
+                max-width: 100%;
+            }
+            .hero-title {
+                font-size: 2.2rem !important;
+            }
+            .nav-mobile-menu {
+                position: fixed;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                padding: 20px 24px;
+                border-bottom: 1px solid var(--border);
+                display: none;
+                flex-direction: column;
+                gap: 6px;
+                z-index: 900;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            .nav-mobile-menu.open {
+                display: flex;
+            }
+            .nav-mobile-menu .nav-link {
+                padding: 10px 0;
+                font-size: 1rem;
+            }
+            .nav-mobile-menu .nav-link::after {
+                display: none;
+            }
+        }
+        @media (min-width: 769px) {
+            .nav-mobile-menu {
+                display: flex !important;
+                flex-direction: row;
+                align-items: center;
+                gap: 2px;
+                position: static;
+                background: none;
+                padding: 0;
+                border: none;
+                max-height: none;
+                overflow: visible;
+            }
+            .nav-mobile-menu .nav-link {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            .hamburger-btn {
+                display: none !important;
+            }
+        }
+        /* ─── Misc ─── */
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .section-sub {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+        .size-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+            padding: 0 8px;
+        }
+        .size-btn:hover,
+        .size-btn.selected {
+            border-color: var(--brand);
+            background: var(--brand);
+            color: #fff;
+        }
+        .quantity-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+            font-weight: 500;
+        }
+        .quantity-btn:hover {
+            border-color: var(--brand);
+            background: var(--brand);
+            color: #fff;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--brand);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+            transition: all 0.4s ease;
+            pointer-events: none;
+            max-width: 90vw;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .bg-soft {
+            background: #f0eeeb;
+        }
+        .text-accent {
+            color: var(--accent);
+        }
+        .text-gold {
+            color: var(--gold);
+        }
+        .border-accent {
+            border-color: var(--accent);
+        }
+        .placeholder-img {
+            background: linear-gradient(135deg, #e0ddd8, #d5d2cc);
+        }
+        .whatsapp-btn {
+            background: #25D366;
+            color: #fff;
+        }
+        .whatsapp-btn:hover {
+            background: #1ebd57;
+            color: #fff;
+        }
+        /* ─── Order confirmation ─── */
+        .confirmation-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .confirmation-card .check-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #2e7d32;
+            margin: 0 auto 16px;
+        }
+        /* ─── Cart item ─── */
+        .cart-item {
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #f0eeeb;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* ─── Star rating placeholder ─── */
+        .stars {
+            color: var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+        /* ─── Footer ─── */
+        footer a {
+            transition: var(--transition);
+        }
+        footer a:hover {
+            color: var(--accent);
+        }
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        .social-icon:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-3px);
+        }
+        .newsletter-input-wrap {
+            display: flex;
+            gap: 0;
+            max-width: 460px;
+            margin: 0 auto;
+            border-radius: 60px;
+            overflow: hidden;
+            border: 1.5px solid var(--border);
+            background: #fff;
+        }
+        .newsletter-input-wrap input {
+            flex: 1;
+            border: none;
+            padding: 14px 20px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            outline: none;
+            background: transparent;
+        }
+        .newsletter-input-wrap button {
+            padding: 14px 28px;
+            border: none;
+            background: var(--brand);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .newsletter-input-wrap button:hover {
+            background: var(--brand-light);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── TOAST ─── -->
+    <div id="toast" class="toast"></div>
+
+    <!-- ─── CART BACKDROP ─── -->
+    <div id="cartBackdrop" class="cart-backdrop"></div>
+
+    <!-- ─── CART SIDEBAR ─── -->
+    <aside id="cartSidebar" class="cart-sidebar">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-[var(--border)] flex-shrink-0">
+            <h2 class="text-xl font-bold flex items-center gap-2">
+                <i class="fas fa-shopping-bag text-[var(--accent)]"></i> Your Cart
+            </h2>
+            <button id="closeCartBtn" class="text-2xl text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors leading-none bg-none border-none cursor-pointer" aria-label="Close cart">&times;</button>
+        </div>
+        <div id="cartItems" class="flex-1 overflow-y-auto px-6 py-4 no-scrollbar">
+            <!-- rendered by JS -->
+        </div>
+        <div id="cartFooter" class="border-t border-[var(--border)] px-6 py-5 flex-shrink-0">
+            <!-- rendered by JS -->
+        </div>
+    </aside>
+
+    <!-- ─── PRODUCT DETAIL MODAL ─── -->
+    <div id="productModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeModalBtn" class="modal-close" aria-label="Close modal">&times;</button>
+            <div id="modalBody">
+                <!-- rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── NAVIGATION ─── -->
+    <header class="fixed top-0 left-0 right-0 z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 lg:h-[68px]">
+                <!-- Logo -->
+                <a class="flex items-center gap-2 text-xl font-extrabold tracking-tight cursor-pointer select-none" id="logoLink">
+                    <span class="w-8 h-8 rounded-lg bg-[var(--brand)] flex items-center justify-center text-white text-sm font-bold">F</span>
+                    <span>FLEXFIT</span>
+                </a>
+
+                <!-- Hamburger -->
+                <button id="hamburgerBtn" class="hamburger-btn text-2xl bg-none border-none cursor-pointer p-2 text-[var(--text-dark)]" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Nav links -->
+                <nav id="navMenu" class="nav-mobile-menu">
+                    <!-- rendered by JS -->
+                </nav>
+
+                <!-- Cart icon -->
+                <button id="cartIconBtn" class="relative bg-none border-none cursor-pointer text-xl text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors p-2" aria-label="Open cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cartCountBadge" class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ─── MAIN CONTENT ─── -->
+    <main class="pt-16 lg:pt-[68px]">
+
+        <!-- ===== HOME ===== -->
+        <section id="page-home" class="page-section active">
+
+            <!-- Hero -->
+            <section class="relative min-h-[80vh] sm:min-h-[85vh] flex items-center bg-[var(--brand)] overflow-hidden">
+                <div class="absolute inset-0">
+                    <img src="https://picsum.photos/1600/900?random=101" alt="Fashion hero - active lifestyle" class="w-full h-full object-cover opacity-50" style="object-position: center 30%;">
+                    <div class="absolute inset-0 hero-overlay"></div>
+                </div>
+                <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+                    <div class="max-w-2xl">
+                        <span class="inline-block text-[var(--gold)] font-semibold text-sm tracking-[0.2em] uppercase mb-4">New Collection 2025</span>
+                        <h1 class="hero-title text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-5" style="font-family:var(--font-display);">
+                            Move With<br>Confidence
+                        </h1>
+                        <p class="text-white/80 text-lg sm:text-xl mb-8 max-w-lg leading-relaxed">
+                            Premium tops, tights, and shorts engineered for performance and designed for life. Elevate your everyday.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <button class="btn-primary btn-accent text-base px-8 py-4 shop-now-btn">
+                                <i class="fas fa-arrow-right"></i> Shop Now
+                            </button>
+                            <button class="btn-primary bg-white/10 text-white border-2 border-white/30 hover:bg-white/20 px-8 py-4 preorder-nav-btn">
+                                Pre-Order <i class="fas fa-clock ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Categories -->
+            <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="section-title">Shop by Category</h2>
+                    <p class="section-sub mt-2">Find your perfect fit</p>
+                </div>
+                <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
+                    <!-- rendered by JS -->
+                </div>
+            </section>
+
+            <!-- Featured Products -->
+            <section class="py-16 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-wrap items-end justify-between mb-10">
+                        <div>
+                            <h2 class="section-title">Featured Products</h2>
+                            <p class="section-sub mt-1">Our best sellers</p>
+                        </div>
+                        <button class="btn-primary btn-sm shop-now-btn mt-4 sm:mt-0">
+                            View All <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                    <div id="featuredProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                        <!-- rendered by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pre-Order Banner -->
+            <section class="py-20 bg-[var(--brand)] text-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <i class="fas fa-clock text-4xl text-[var(--gold)] mb-6"></i>
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-4" style="font-family:var(--font-display);">Coming Soon — Reserve Yours</h2>
+                    <p class="text-white/70 text-lg mb-8 max-w-xl mx-auto">
+                        Can't wait? Pre-order upcoming styles before they drop. Exclusive early access, guaranteed fit.
+                    </p>
+                    <button class="btn-primary bg-[var(--gold)] text-[var(--brand)] hover:bg-[var(--gold)]/90 font-bold px-10 py-4 text-base preorder-nav-btn">
+                        <i class="fas fa-star mr-2"></i> Explore Pre-Orders
+                    </button>
+                </div>
+            </section>
+
+            <!-- Newsletter -->
+            <section class="py-20 bg-white">
+                <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <i class="far fa-envelope text-3xl text-[var(--accent)] mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-3" style="font-family:var(--font-display);">Stay in the Loop</h2>
+                    <p class="text-[var(--text-muted)] mb-8">Be the first to hear about drops, restocks, and exclusive offers.</p>
+                    <div class="newsletter-input-wrap">
+                        <input type="email" id="newsletterEmail" placeholder="Enter your email" required aria-label="Email for newsletter">
+                        <button id="newsletterBtn">Subscribe</button>
+                    </div>
+                    <p id="newsletterMsg" class="text-sm mt-3 text-[var(--accent)] font-medium hidden"></p>
+                </div>
+            </section>
+        </section>
+
+        <!-- ===== SHOP ===== -->
+        <section id="page-shop" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+                <div class="flex flex-wrap items-end justify-between mb-8">
+                    <div>
+                        <h1 class="text-3xl sm:text-4xl font-bold" style="font-family:var(--font-display);">Shop All</h1>
+                        <p id="shopResultsCount" class="text-[var(--text-muted)] mt-1 text-sm"></p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 mt-4 sm:mt-0">
+                        <!-- Search -->
+                        <div class="relative">
+                            <input id="shopSearch" type="text" placeholder="Search..." class="form-input pl-10 pr-4 py-2 text-sm w-40 sm:w-48" aria-label="Search products">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-sm"></i>
+                        </div>
+                        <!-- Sort -->
+                        <select id="shopSort" class="form-select text-sm py-2 w-36" aria-label="Sort products">
+                            <option value="default">Sort: Default</option>
+                            <option value="price-asc">Price: Low → High</option>
+                            <option value="price-desc">Price: High → Low</option>
+                            <option value="name-asc">Name: A → Z</option>
+                            <option value="name-desc">Name: Z → A</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Filter pills -->
+                <div id="filterPills" class="flex flex-wrap gap-2 mb-8">
+                    <!-- rendered by JS -->
+                </div>
+
+                <!-- Product grid -->
+                <div id="shopGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                    <!-- rendered by JS -->
+                </div>
+                <div id="shopEmpty" class="hidden text-center py-20 text-[var(--text-muted)]">
+                    <i class="fas fa-search text-4xl mb-4"></i>
+                    <p class="text-lg">No products match your criteria.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PRE-ORDER ===== -->
+        <section id="page-preorder" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl sm:text-4xl font-bold" style="font-family:var(--font-display);">Pre-Order</h1>
+                    <p class="text-[var(--text-muted)] mt-2">Secure your upcoming favorites before they sell out</p>
+                </div>
+                <div id="preorderGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                    <!-- rendered by JS -->
+                </div>
+                <div id="preorderEmpty" class="hidden text-center py-20 text-[var(--text-muted)]">
+                    <i class="fas fa-box-open text-4xl mb-4"></i>
+                    <p class="text-lg">No pre-order products available right now.</p>
+                </div>
+            </div>
+
+            <!-- Pre-Order Form Modal -->
+            <div id="preorderFormModal" class="modal-overlay">
+                <div class="modal-content max-w-lg">
+                    <button id="closePreorderFormBtn" class="modal-close" aria-label="Close">&times;</button>
+                    <h3 class="text-2xl font-bold mb-2" style="font-family:var(--font-display);">Place Pre-Order</h3>
+                    <p class="text-[var(--text-muted)] text-sm mb-6" id="preorderFormProduct">Product details</p>
+                    <form id="preorderForm" novalidate>
+                        <input type="hidden" id="poProductId">
+                        <input type="hidden" id="poProductName">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="poName">Full Name *</label>
+                                <input type="text" id="poName" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="poPhone">Phone *</label>
+                                <input type="tel" id="poPhone" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="poEmail">Email *</label>
+                            <input type="email" id="poEmail" class="form-input" required>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="poSize">Size *</label>
+                                <select id="poSize" class="form-select" required>
+                                    <option value="">Select size</option>
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="poQty">Quantity *</label>
+                                <input type="number" id="poQty" class="form-input" min="1" max="10" value="1" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="poNotes">Notes (optional)</label>
+                            <textarea id="poNotes" class="form-textarea" rows="2" placeholder="Color preference, special requests..."></textarea>
+                        </div>
+                        <div class="bg-[var(--bg-light)] p-4 rounded-lg mb-4 text-sm text-[var(--text-muted)]">
+                            <i class="fas fa-clock mr-2 text-[var(--gold)]"></i>
+                            Expected delivery: <strong id="poDeliveryEstimate">4–6 weeks</strong> from order confirmation.
+                        </div>
+                        <button type="submit" class="btn-primary btn-accent w-full text-base py-4">
+                            <i class="fas fa-check-circle"></i> Place Pre-Order
+                        </button>
+                    </form>
+                    <div id="preorderConfirm" class="hidden text-center py-6">
+                        <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-3xl text-green-600 mx-auto mb-4">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">Pre-Order Received!</h4>
+                        <p class="text-[var(--text-muted)] mb-1">Reference: <strong id="poRefNumber" class="text-[var(--brand)]"></strong></p>
+                        <p class="text-[var(--text-muted)] text-sm">We will contact you to confirm your order.</p>
+                        <button id="poCloseConfirm" class="btn-primary btn-sm mt-6">Done</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ABOUT ===== -->
+        <section id="page-about" class="page-section">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl sm:text-4xl font-bold" style="font-family:var(--font-display);">About FLEXFIT</h1>
+                    <div class="w-16 h-1 bg-[var(--accent)] mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="https://picsum.photos/600/700?random=202" alt="FLEXFIT brand story" class="rounded-[var(--radius)] w-full h-auto object-cover shadow-lg" loading="lazy">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4" style="font-family:var(--font-display);">Designed to Move.</h2>
+                        <p class="text-[var(--text-muted)] mb-4 leading-relaxed">
+                            At <strong>FLEXFIT</strong>, we believe what you wear should never hold you back. Born from a passion for active living and clean design, our brand creates clothing that moves with you — from sunrise runs to studio sessions and everything in between.
+                        </p>
+                        <p class="text-[var(--text-muted)] mb-4 leading-relaxed">
+                            Every piece is crafted with premium, performance-focused fabrics that breathe, stretch, and recover. We obsess over the details: flatlock seams, moisture-wicking finishes, and silhouettes that flatter every body.
+                        </p>
+                        <div class="grid grid-cols-3 gap-4 my-8">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-[var(--accent)]">100+</div>
+                                <div class="text-xs text-[var(--text-muted)]">Designs</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-[var(--accent)]">15K+</div>
+                                <div class="text-xs text-[var(--text-muted)]">Happy Customers</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-[var(--accent)]">4.9★</div>
+                                <div class="text-xs text-[var(--text-muted)]">Avg. Rating</div>
+                            </div>
+                        </div>
+                        <p class="text-[var(--text-muted)] leading-relaxed">
+                            Our mission is simple: <strong>empower every body to move with confidence.</strong> We create versatile essentials that transition from workout to weekend, because your style should keep up with your life.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTACT ===== -->
+        <section id="page-contact" class="page-section">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl sm:text-4xl font-bold" style="font-family:var(--font-display);">Get in Touch</h1>
+                    <p class="text-[var(--text-muted)] mt-2">We'd love to hear from you</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div>
+                        <form id="contactForm" novalidate>
+                            <div class="mb-4">
+                                <label for="contactName">Name *</label>
+                                <input type="text" id="contactName" class="form-input" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="contactEmail">Email *</label>
+                                <input type="email" id="contactEmail" class="form-input" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="contactPhone">Phone</label>
+                                <input type="tel" id="contactPhone" class="form-input">
+                            </div>
+                            <div class="mb-4">
+                                <label for="contactMessage">Message *</label>
+                                <textarea id="contactMessage" class="form-textarea" rows="4" required placeholder="How can we help?"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary btn-accent w-full text-base py-4">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </form>
+                        <div id="contactConfirm" class="hidden text-center py-8">
+                            <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-3xl text-green-600 mx-auto mb-4">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Message Sent!</h4>
+                            <p class="text-[var(--text-muted)]">We'll get back to you within 24 hours.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-[var(--radius)] p-6 shadow-sm border border-[var(--border)]">
+                            <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-map-marker-alt text-[var(--accent)]"></i> Visit Us</h3>
+                            <p class="text-[var(--text-muted)]">FLEXFIT Studio<br>128 Active Lane, Suite 200<br>Los Angeles, CA 90210</p>
+                        </div>
+                        <div class="bg-white rounded-[var(--radius)] p-6 shadow-sm border border-[var(--border)]">
+                            <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-phone text-[var(--accent)]"></i> Contact</h3>
+                            <p class="text-[var(--text-muted)]">+1 (800) 555-FLEX<br>hello@flexfit.com</p>
+                        </div>
+                        <div class="bg-white rounded-[var(--radius)] p-6 shadow-sm border border-[var(--border)]">
+                            <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-clock text-[var(--accent)]"></i> Hours</h3>
+                            <p class="text-[var(--text-muted)]">Mon–Fri: 9am – 7pm<br>Sat: 10am – 5pm<br>Sun: Closed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CHECKOUT ===== -->
+        <section id="page-checkout" class="page-section">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+                <h1 class="text-3xl sm:text-4xl font-bold mb-8 text-center" style="font-family:var(--font-display);">Checkout</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <div class="lg:col-span-3">
+                        <form id="checkoutForm" novalidate>
+                            <h2 class="text-xl font-bold mb-4">Delivery Information</h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="coName">Full Name *</label>
+                                    <input type="text" id="coName" class="form-input" required>
+                                </div>
+                                <div>
+                                    <label for="coPhone">Phone *</label>
+                                    <input type="tel" id="coPhone" class="form-input" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="coEmail">Email *</label>
+                                <input type="email" id="coEmail" class="form-input" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="coAddress">Delivery Address *</label>
+                                <input type="text" id="coAddress" class="form-input" required>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="coCity">City *</label>
+                                    <input type="text" id="coCity" class="form-input" required>
+                                </div>
+                                <div>
+                                    <label for="coZip">ZIP Code</label>
+                                    <input type="text" id="coZip" class="form-input">
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <label for="coNotes">Order Notes</label>
+                                    <textarea id="coNotes" class="form-textarea" rows="2" placeholder="Delivery instructions, gate code, etc."></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary btn-accent w-full text-base py-4">
+                                    <i class="fas fa-check-circle"></i> Place Order
+                                </button>
+                            </form>
+                        </div>
+                        <div class="lg:col-span-2">
+                            <div class="bg-white rounded-[var(--radius)] p-6 shadow-sm border border-[var(--border)] sticky top-24">
+                                <h2 class="text-xl font-bold mb-4">Order Summary</h2>
+                                <div id="checkoutSummary">
+                                    <!-- rendered by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Confirmation -->
+                <div id="orderConfirmation" class="hidden py-12">
+                    <div class="confirmation-card text-center">
+                        <div class="check-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-2" style="font-family:var(--font-display);">Order Confirmed!</h2>
+                        <p class="text-[var(--text-muted)] mb-1">Thank you, <strong id="confirmName"></strong>.</p>
+                        <p class="text-[var(--text-muted)] mb-4">Order <strong id="confirmOrderNumber" class="text-[var(--brand)]"></strong></p>
+                        <div class="bg-[var(--bg-light)] rounded-lg p-4 text-left text-sm mb-6">
+                            <div id="confirmItems" class="space-y-2 mb-3"></div>
+                            <div class="border-t border-[var(--border)] pt-3 flex justify-between font-bold">
+                                <span>Total</span>
+                                <span id="confirmTotal"></span>
+                            </div>
+                        </div>
+                        <p class="text-[var(--text-muted)] text-sm mb-2"><i class="fas fa-map-marker-alt mr-1"></i> Delivery: <span id="confirmDelivery"></span></p>
+                        <div class="flex flex-wrap gap-3 justify-center mt-6">
+                            <button class="btn-primary btn-sm shop-now-btn">Continue Shopping</button>
+                            <button id="confirmWhatsAppBtn" class="btn-primary whatsapp-btn btn-sm">
+                                <i class="fab fa-whatsapp"></i> Order via WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ─── FOOTER ─── -->
+        <footer class="bg-[var(--brand)] text-white mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    <!-- Brand -->
+                    <div>
+                        <div class="flex items-center gap-2 text-xl font-extrabold mb-4">
+                            <span class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center text-sm">F</span>
+                            FLEXFIT
+                        </div>
+                        <p class="text-white/60 text-sm leading-relaxed">Premium activewear for those who move. Tops, tights, and shorts engineered for confidence.</p>
+                        <div class="flex gap-3 mt-5">
+                            <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                            <a href="#" class="social-icon" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                            <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="font-bold text-sm uppercase tracking-wider mb-4 text-white/70">Quick Links</h4>
+                        <ul class="space-y-2 text-sm" id="footerNavLinks">
+                            <!-- rendered by JS -->
+                        </ul>
+                    </div>
+                    <!-- Contact -->
+                    <div>
+                        <h4 class="font-bold text-sm uppercase tracking-wider mb-4 text-white/70">Contact</h4>
+                        <ul class="space-y-2 text-sm text-white/60">
+                            <li><i class="fas fa-map-marker-alt w-5 mr-1"></i> 128 Active Lane, LA</li>
+                            <li><i class="fas fa-phone w-5 mr-1"></i> +1 (800) 555-FLEX</li>
+                            <li><i class="fas fa-envelope w-5 mr-1"></i> hello@flexfit.com</li>
+                            <li><i class="fas fa-clock w-5 mr-1"></i> Mon–Sat 9am–7pm</li>
+                        </ul>
+                    </div>
+                    <!-- Newsletter mini -->
+                    <div>
+                        <h4 class="font-bold text-sm uppercase tracking-wider mb-4 text-white/70">Stay Updated</h4>
+                        <p class="text-white/60 text-sm mb-4">Get 10% off your first order.</p>
+                        <div class="flex gap-0">
+                            <input type="email" id="footerNewsletter" placeholder="Your email" class="form-input text-sm rounded-r-none border-white/20 bg-white/10 text-white placeholder-white/40" aria-label="Newsletter email">
+                            <button id="footerNewsletterBtn" class="bg-[var(--accent)] px-4 rounded-r-lg text-sm font-semibold hover:bg-[var(--accent-hover)] transition-colors border-none cursor-pointer">Go</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-white/10 mt-10 pt-8 text-center text-white/40 text-sm">
+                    &copy; 2025 FLEXFIT. All rights reserved. &nbsp;|&nbsp; Designed for movement.
+                </div>
+            </div>
+        </footer>
+
+        <!-- ─── JAVASCRIPT ─── -->
+        <script>
+            // ================================================================
+            //  CONFIGURATION
+            // ================================================================
+            const WHATSAPP_NUMBER = "YOUR_NUMBER_HERE"; // ← Edit this
+
+            // ================================================================
+            //  DATA LAYER
+            // ================================================================
+            const products = [{
+                id: 'top-1',
+                name: 'Classic Cotton Tee',
+                category: 'tops',
+                price: 29.99,
+                image: 'https://picsum.photos/400/500?random=1',
+                description: 'Everyday essential with a relaxed fit. Pre-shrunk 100% organic cotton jersey. Ribbed crew neckline.',
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                stock: 45,
+                preorder: false,
+                featured: true
+            }, {
+                id: 'top-2',
+                name: 'Performance Tank Top',
+                category: 'tops',
+                price: 34.99,
+                image: 'https://picsum.photos/400/500?random=2',
+                description: 'Built for the grind. Moisture-wicking fabric with racerback cut and laser-cut hem.',
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 30,
+                preorder: false,
+                featured: true
+            }, {
+                id: 'top-3',
+                name: 'Long Sleeve Crop Top',
+                category: 'tops',
+                price: 39.99,
+                image: 'https://picsum.photos/400/500?random=3',
+                description: 'Sleek layering piece with thumbholes. Midriff-length with a soft, stretchy fit.',
+                sizes: ['XS', 'S', 'M', 'L'],
+                stock: 22,
+                preorder: false,
+                featured: false
+            }, {
+                id: 'top-4',
+                name: 'Seamless Sports Bra',
+                category: 'tops',
+                price: 44.99,
+                image: 'https://picsum.photos/400/500?random=4',
+                description: 'Medium-support seamless bra with removable padding. Sweat-wicking and chafe-free.',
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 18,
+                preorder: true,
+                featured: false
+            }, {
+                id: 'tight-1',
+                name: 'High-Waist Leggings',
+                category: 'tights',
+                price: 49.99,
+                image: 'https://picsum.photos/400/500?random=5',
+                description: 'Buttery-soft compression leggings with a wide waistband and hidden pocket.',
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                stock: 60,
+                preorder: false,
+                featured: true
+            }, {
+                id: 'tight-2',
+                name: 'Compression Tights',
+                category: 'tights',
+                price: 59.99,
+                image: 'https://picsum.photos/400/500?random=6',
+                description: 'Graduated compression for recovery and performance. Flatlock seams, reflective logos.',
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 35,
+                preorder: false,
+                featured: true
+            }, {
+                id: 'tight-3',
+                name: 'Cropped Capri Tights',
+                category: 'tights',
+                price: 44.99,
+                image: 'https://picsum.photos/400/500?random=7',
+                description: 'Perfect for warmer days. 7/8 length with a soft, brushed finish and side pocket.',
+                sizes: ['XS', 'S', 'M', 'L'],
+                stock: 28,
+                preorder: false,
+                featured: false
+            }, {
+                id: 'tight-4',
+                name: 'Mesh Panel Tights',
+                category: 'tights',
+                price: 54.99,
+                image: 'https://picsum.photos/400/500?random=8',
+                description: 'Strategic mesh panels for ventilation. High-rise waist, squat-proof fabric.',
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 0,
+                preorder: true,
+                featured: false
+            }, {
+                id: 'short-1',
+                name: 'Running Shorts',
+                category: 'shorts',
+                price: 34.99,
+                image: 'https://picsum.photos/400/500?random=9',
+                description: 'Lightweight 2-in-1 shorts with built-in brief. Zipper pocket and reflective trim.',
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 50,
+                preorder: false,
+                featured: true
+            }, {
+                id: 'short-2',
+                name: 'Bike Shorts',
+                category: 'shorts',
+                price: 39.99,
+                image: 'https://picsum.photos/400/500?random=10',
+                description: 'Classic bike short silhouette with a modern twist. 4-way stretch, mid-rise.',
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                stock: 42,
+                preorder: false,
+                featured: true
+            }, {
+                id: 'short-3',
+                name: 'High-Waist Shorts',
+                category: 'shorts',
+                price: 44.99,
+                image: 'https://picsum.photos/400/500?random=11',
+                description: 'Structured high-rise shorts with a paper-bag waist. Belted, pockets, polished look.',
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 20,
+                preorder: false,
+                featured: false
+            }, {
+                id: 'short-4',
+                name: 'Cargo Shorts',
+                category: 'shorts',
+                price: 49.99,
+                image: 'https://picsum.photos/400/500?random=12',
+                description: 'Utility-inspired with a clean finish. Multiple pockets, adjustable waist, durable twill.',
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 15,
+                preorder: true,
+                featured: false
+            }, {
+                id: 'top-5',
+                name: 'Limited Edition Crop Tee',
+                category: 'tops',
+                price: 39.99,
+                image: 'https://picsum.photos/400/500?random=13',
+                description: 'Exclusive drop — oversized crop with screen-printed graphic. Soft laundered cotton.',
+                sizes: ['XS', 'S', 'M', 'L'],
+                stock: 0,
+                preorder: true,
+                featured: false
+            }, {
+                id: 'tight-5',
+                name: 'Signature Leggings',
+                category: 'tights',
+                price: 64.99,
+                image: 'https://picsum.photos/400/500?random=14',
+                description: 'Our signature fabric — weightless, sculpting, and buttery soft. High-rise, no-slip waist.',
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                stock: 0,
+                preorder: true,
+                featured: false
+            }];
+
+            const navItems = [
+                { label: 'Home', page: 'home' },
+                { label: 'Shop', page: 'shop' },
+                { label: 'Tops', page: 'shop', filter: 'tops' },
+                { label: 'Tights', page: 'shop', filter: 'tights' },
+                { label: 'Shorts', page: 'shop', filter: 'shorts' },
+                { label: 'Pre-Order', page: 'preorder' },
+                { label: 'About', page: 'about' },
+                { label: 'Contact', page: 'contact' },
+                { label: 'Cart', page: 'cart' }
+            ];
+
+            const categories = [
+                { name: 'Tops', image: 'https://picsum.photos/400/400?random=31', filter: 'tops' },
+                { name: 'Tights', image: 'https://picsum.photos/400/400?random=32', filter: 'tights' },
+                { name: 'Shorts', image: 'https://picsum.photos/400/400?random=33', filter: 'shorts' }
+            ];
+
+            const footerQuickLinks = [
+                { label: 'Home', page: 'home' },
+                { label: 'Shop All', page: 'shop' },
+                { label: 'Pre-Order', page: 'preorder' },
+                { label: 'About', page: 'about' },
+                { label: 'Contact', page: 'contact' }
+            ];
+
+            // ================================================================
+            //  STATE
+            // ================================================================
+            let cart = JSON.parse(localStorage.getItem('flexfit_cart')) || [];
+            let preOrders = JSON.parse(localStorage.getItem('flexfit_preorders')) || [];
+            let orders = JSON.parse(localStorage.getItem('flexfit_orders')) || [];
+            let currentPage = 'home';
+            let currentFilter = 'all';
+            let currentSearch = '';
+            let currentSort = 'default';
+            let selectedProductId = null;
+            let selectedSize = null;
+
+            // ================================================================
+            //  UTILITY FUNCTIONS
+            // ================================================================
+            function formatPrice(n) { return '$' + n.toFixed(2); }
+
+            function generateRef() { return 'FLEX-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random() *
+                    9000 + 1000); }
+
+            function getProduct(id) { return products.find(p => p.id === id); }
+
+            function getCartCount() { return cart.reduce((sum, item) => sum + item.quantity, 0); }
+
+            function getCartSubtotal() { return cart.reduce((sum, item) => sum + item.price * item.quantity, 0); }
+
+            const DELIVERY_FEE = 5.99;
+
+            function saveCart() {
+                localStorage.setItem('flexfit_cart', JSON.stringify(cart));
+                updateCartBadge();
+            }
+
+            function savePreOrders() {
+                localStorage.setItem('flexfit_preorders', JSON.stringify(preOrders));
+            }
+
+            function saveOrders() {
+                localStorage.setigItem('flexfit_orders', JSON.stringify(orders));
+            }
+
+            function showToast(msg) {
+                const t = document.getElementById('toast');
+                t.textContent = msg;
+                t.classList.add('show');
+                clearTimeout(t._hide);
+                t._hide = setTimeout(() => t.classList.remove('show'), 2800);
+            }
+
+            function updateCartBadge() {
+                const badge = document.getElementById('cartCountBadge');
+                const count = getCartCount();
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline-flex' : 'none';
+            }
+
+            // ================================================================
+            //  RENDER FUNCTIONS
+            // ================================================================
+            function renderNav(items) {
+                return items.map(i => {
+                    let cls = 'nav-link';
+                    if (i.page === currentPage) cls += ' active';
+                    let attr = `data-page="${i.page}"`;
+                    if (i.filter) attr += ` data-filter="${i.filter}"`;
+                    return `<span class="${cls}" ${attr}>${i.label}</span>`;
+                }).join('');
+            }
+
+            function renderProductCard(p, showActions = true) {
+                const isPreorder = p.preorder || p.stock === 0;
+                const badge = isPreorder ? '<span class="badge pre-order-badge">PRE-ORDER</span>' :
+                    (p.stock < 10 ? '<span class="badge" style="background:#f59e0b;">Low Stock</span>' : '');
+                const sizes = p.sizes.map(s =>
+                    `<span class="size-btn" data-size="${s}">${s}</span>`
+                ).join(' ');
+                const actionBtn = isPreorder ?
+                    `<button class="btn-primary btn-accent btn-sm w-full preorder-btn" data-id="${p.id}"><i class="fas fa-clock"></i> Pre-Order</button>` :
+                    `<button class="btn-primary btn-accent btn-sm w-full add-to-cart-btn" data-id="${p.id}"><i class="fas fa-shopping-bag"></i> Add to Cart</button>`;
+
+                return `
+                    <article class="product-card" data-id="${p.id}">
+                        <div class="img-wrap">
+                            <img src="${p.image}" alt="${p.name}" loading="lazy">
+                            ${badge}
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <span class="text-xs uppercase tracking-wider text-[var(--text-muted)] font-medium">${p.category}</span>
+                            <h3 class="font-semibold text-lg mt-1 mb-1">${p.name}</h3>
+                            <div class="stars">★★★★★</div>
+                            <div class="text-lg font-bold text-[var(--brand)] mt-1 mb-2">${formatPrice(p.price)}</div>
+                            <div class="flex flex-wrap gap-1.5 mb-3 sizes-container">${sizes}</div>
+                            <div class="mt-auto flex flex-col gap-2">
+                                ${actionBtn}
+                                <button class="btn-primary btn-outline btn-sm w-full view-details-btn" data-id="${p.id}"><i class="fas fa-eye"></i> View Details</button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }
+
+            function renderProductModal(p) {
+                const isPreorder = p.preorder || p.stock === 0;
+                const status = isPreorder ?
+                    '<span class="text-[var(--gold)] font-semibold"><i class="fas fa-clock"></i> Available for Pre-Order</span>' :
+                    (p.stock > 0 ?
+                        `<span class="text-green-600 font-semibold"><i class="fas fa-check-circle"></i> In Stock (${p.stock})</span>` :
+                        '<span class="text-red-500 font-semibold"><i class="fas fa-times-circle"></i> Out of Stock</span>');
+                const sizes = p.sizes.map(s =>
+                    `<span class="size-btn" data-size="${s}">${s}</span>`
+                ).join(' ');
+                const actionHtml = isPreorder ?
+                    `<button id="modalPreorderBtn" class="btn-primary btn-accent w-full text-base py-4" data-id="${p.id}"><i class="fas fa-clock"></i> Pre-Order Now</button>` :
+                    `<button id="modalAddToCartBtn" class="btn-primary btn-accent w-full text-base py-4" data-id="${p.id}"><i class="fas fa-shopping-bag"></i> Add to Cart</button>`;
+
+                return `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <img src="${p.image}" alt="${p.name}" class="w-full rounded-[var(--radius-sm)] bg-[var(--bg-light)]" style="aspect-ratio:1/1.1;object-fit:cover;">
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-[var(--text-muted)] font-medium">${p.category}</span>
+                            <h2 class="text-2xl font-bold mt-1 mb-2" style="font-family:var(--font-display);">${p.name}</h2>
+                            <div class="stars text-lg mb-2">★★★★★</div>
+                            <div class="text-2xl font-bold text-[var(--brand)] mb-3">${formatPrice(p.price)}</div>
+                            <p class="text-[var(--text-muted)] mb-4">${p.description}</p>
+                            <div class="mb-3">${status}</div>
+                            <div class="mb-4">
+                                <label class="text-sm font-medium mb-1 block">Select Size</label>
+                                <div class="flex flex-wrap gap-2" id="modalSizes">${sizes}</div>
+                                <p id="modalSizeError" class="text-red-500 text-xs mt-1 hidden">Please select a size.</p>
+                            </div>
+                            <div class="mb-5">
+                                <label class="text-sm font-medium mb-1 block">Quantity</label>
+                                <div class="flex items-center gap-3">
+                                    <button id="modalQtyDown" class="quantity-btn" aria-label="Decrease quantity">−</button>
+                                    <span id="modalQtyDisplay" class="font-semibold text-lg w-8 text-center">1</span>
+                                    <button id="modalQtyUp" class="quantity-btn" aria-label="Increase quantity">+</button>
+                                </div>
+                            </div>
+                            ${actionHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderCartItem(item) {
+                const p = getProduct(item.productId);
+                if (!p) return '';
+                return `
+                    <div class="cart-item" data-id="${item.productId}" data-size="${item.size}">
+                        <img src="${p.image}" alt="${p.name}" loading="lazy">
+                        <div>
+                            <p class="font-semibold text-sm">${p.name}</p>
+                            <p class="text-xs text-[var(--text-muted)]">Size: ${item.size} · ${formatPrice(item.price)}</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <button class="quantity-btn cart-qty-down" style="width:28px;height:28px;font-size:0.9rem;">−</button>
+                                <span class="text-sm font-semibold w-6 text-center">${item.quantity}</span>
+                                <button class="quantity-btn cart-qty-up" style="width:28px;height:28px;font-size:0.9rem;">+</button>
+                                <button class="text-red-500 text-xs ml-2 hover:underline bg-none border-none cursor-pointer cart-remove-btn">Remove</button>
+                            </div>
+                        </div>
+                        <div class="text-right font-semibold text-sm">${formatPrice(item.price * item.quantity)}</div>
+                    </div>
+                `;
+            }
+
+            function renderCartFooter() {
+                const count = getCartCount();
+                if (count === 0) return '<p class="text-center text-[var(--text-muted)] py-6">Your cart is empty.</p>';
+                const sub = getCartSubtotal();
+                const total = sub + DELIVERY_FEE;
+                return `
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between"><span>Subtotal (${count} items)</span><span>${formatPrice(sub)}</span></div>
+                        <div class="flex justify-between"><span>Delivery</span><span>${formatPrice(DELIVERY_FEE)}</span></div>
+                        <div class="flex justify-between font-bold text-base border-t border-[var(--border)] pt-3"><span>Total</span><span>${formatPrice(total)}</span></div>
+                        <button id="checkoutBtn" class="btn-primary btn-accent w-full mt-4 text-base py-4"><i class="fas fa-lock"></i> Checkout</button>
+                        <button id="clearCartBtn" class="text-xs text-[var(--text-muted)] hover:text-red-500 w-full text-center bg-none border-none cursor-pointer py-2 transition-colors">Clear Cart</button>
+                    </div>
+                `;
+            }
+
+            function renderCheckoutSummary() {
+                const items = cart;
+                if (items.length === 0) return '<p class="text-[var(--text-muted)]">Your cart is empty.</p>';
+                const sub = getCartSubtotal();
+                const total = sub + DELIVERY_FEE;
+                let html = items.map(item => {
+                    const p = getProduct(item.productId);
+                    return `
+                        <div class="flex justify-between text-sm py-2 border-b border-[var(--border)] last:border-0">
+                            <span>${p ? p.name : 'Product'} × ${item.quantity} <span class="text-[var(--text-muted)]">(${item.size})</span></span>
+                            <span>${formatPrice(item.price * item.quantity)}</span>
+                        </div>
+                    `;
+                }).join('');
+                html += `
+                    <div class="border-t border-[var(--border)] pt-3 mt-3 space-y-1 text-sm">
+                        <div class="flex justify-between"><span>Subtotal</span><span>${formatPrice(sub)}</span></div>
+                        <div class="flex justify-between"><span>Delivery</span><span>${formatPrice(DELIVERY_FEE)}</span></div>
+                        <div class="flex justify-between font-bold text-base pt-2"><span>Total</span><span>${formatPrice(total)}</span></div>
+                    </div>
+                `;
+                return html;
+            }
+
+            function renderFilterPills(active) {
+                const filters = [
+                    { key: 'all', label: 'All' },
+                    { key: 'tops', label: '👕 Tops' },
+                    { key: 'tights', label: '🦵 Tights' },
+                    { key: 'shorts', label: '🩳 Shorts' },
+                    { key: 'preorder', label: '⏳ Pre-Order' }
+                ];
+                return filters.map(f =>
+                    `<button class="filter-pill ${f.key === active ? 'active' : ''}" data-filter="${f.key}">${f.label}</button>`
+                ).join('');
+            }
+
+            function renderFooterLinks() {
+                return footerQuickLinks.map(l =>
+                    `<li><a class="cursor-pointer text-white/60 hover:text-white transition-colors" data-page="${l.page}">${l.label}</a></li>`
+                ).join('');
+            }
+
+            // ================================================================
+            //  MOUNT FUNCTIONS
+            // ================================================================
+            function mountNav() {
+                document.getElementById('navMenu').innerHTML = renderNav(navItems);
+            }
+
+            function mountCategories() {
+                document.getElementById('categoryGrid').innerHTML = categories.map(c => `
+                    <div class="cat-card" data-filter="${c.filter}">
+                        <img src="${c.image}" alt="${c.name}" loading="lazy">
+                        <div class="cat-label">${c.name}</div>
+                    </div>
+                `).join('');
+            }
+
+            function mountFeaturedProducts() {
+                const featured = products.filter(p => p.featured);
+                document.getElementById('featuredProductsGrid').innerHTML = featured.map(p => renderProductCard(p)).join(
+                '');
+            }
+
+            function mountShop() {
+                let filtered = [...products];
+                // filter
+                if (currentFilter === 'preorder') {
+                    filtered = filtered.filter(p => p.preorder || p.stock === 0);
+                } else if (currentFilter !== 'all') {
+                    filtered = filtered.filter(p => p.category === currentFilter);
+                }
+                // search
+                if (currentSearch.trim()) {
+                    const q = currentSearch.trim().toLowerCase();
+                    filtered = filtered.filter(p =>
+                        p.name.toLowerCase().includes(q) ||
+                        p.category.toLowerCase().includes(q) ||
+                        p.description.toLowerCase().includes(q)
+                    );
+                }
+                // sort
+                if (currentSort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+                else if (currentSort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+                else if (currentSort === 'name-asc') filtered.sort((a, b) => a.name.localeCompare(b.name));
+                else if (currentSort === 'name-desc') filtered.sort((a, b) => b.name.localeCompare(a.name));
+
+                document.getElementById('shopGrid').innerHTML = filtered.map(p => renderProductCard(p)).join('');
+                document.getElementById('shopResultsCount').textContent = filtered.length + ' product' + (filtered.length !==
+                    1 ? 's' : '');
+                document.getElementById('shopEmpty').classList.toggle('hidden', filtered.length > 0);
+                document.getElementById('filterPills').innerHTML = renderFilterPills(currentFilter);
+            }
+
+            function mountPreorder() {
+                const po = products.filter(p => p.preorder || p.stock === 0);
+                document.getElementById('preorderGrid').innerHTML = po.map(p => renderProductCard(p)).join('');
+                document.getElementById('preorderEmpty').classList.toggle('hidden', po.length > 0);
+            }
+
+            function mountCart() {
+                document.getElementById('cartItems').innerHTML = cart.length === 0 ?
+                    '<div class="text-center text-[var(--text-muted)] py-10"><i class="fas fa-shopping-bag text-4xl mb-3"></i><p>Your cart is empty.</p></div>' :
+                    cart.map(item => renderCartItem(item)).join('');
+                document.getElementById('cartFooter').innerHTML = renderCartFooter();
+                updateCartBadge();
+            }
+
+            function mountCheckoutSummary() {
+                document.getElementById('checkoutSummary').innerHTML = renderCheckoutSummary();
+            }
+
+            function mountFooter() {
+                document.getElementById('footerNavLinks').innerHTML = renderFooterLinks();
+            }
+
+            // ================================================================
+            //  PAGE NAVIGATION
+            // ================================================================
+            function showPage(page, data) {
+                currentPage = page;
+                document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+                const target = document.getElementById('page-' + page);
+                if (target) target.classList.add('active');
+
+                // update nav
+                document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll(`.nav-link[data-page="${page}"]`).forEach(el => el.classList.add('active'));
+
+                // close mobile menu
+                document.getElementById('navMenu').classList.remove('open');
+
+                // scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // re-mount dynamic content
+                if (page === 'shop') {
+                    if (data && data.filter) currentFilter = data.filter;
+                    mountShop();
+                }
+                if (page === 'preorder') mountPreorder();
+                if (page === 'cart') { mountCart();
+                    openCart(); }
+                if (page === 'checkout') { mountCheckoutSummary(); }
+                if (page === 'home') { mountFeaturedProducts();
+                    mountCategories(); }
+            }
+
+            function openCart() {
+                document.getElementById('cartSidebar').classList.add('open');
+                document.getElementById('cartBackdrop').classList.add('open');
+                mountCart();
+            }
+
+            function closeCart() {
+                document.getElementById('cartSidebar').classList.remove('open');
+                document.getElementById('cartBackdrop').classList.remove('open');
+            }
+
+            // ================================================================
+            //  CART OPERATIONS
+            // ================================================================
+            function addToCart(productId, size, quantity = 1) {
+                const p = getProduct(productId);
+                if (!p) { showToast('Product not found.'); return false; }
+                if (!size) { showToast('Please select a size.'); return false; }
+                if (p.preorder || p.stock === 0) { showToast('This item is for pre-order only.'); return false; }
+
+                const existing = cart.find(item => item.productId === productId && item.size === size);
+                if (existing) {
+                    existing.quantity += quantity;
+                } else {
+                    cart.push({ productId, size, quantity, price: p.price });
+                }
+                saveCart();
+                mountCart();
+                showToast('Added to cart!');
+                return true;
+            }
+
+            function removeFromCart(productId, size) {
+                cart = cart.filter(item => !(item.productId === productId && item.size === size));
+                saveCart();
+                mountCart();
+            }
+
+            function updateCartQty(productId, size, delta) {
+                const item = cart.find(i => i.productId === productId && i.size === size);
+                if (!item) return;
+                item.quantity += delta;
+                if (item.quantity < 1) {
+                    removeFromCart(productId, size);
+                    return;
+                }
+                saveCart();
+                mountCart();
+            }
+
+            function clearCart() {
+                if (cart.length === 0) return;
+                cart = [];
+                saveCart();
+                mountCart();
+                showToast('Cart cleared.');
+            }
+
+            // ================================================================
+            //  PRE-ORDER
+            // ================================================================
+            function openPreorderForm(productId) {
+                const p = getProduct(productId);
+                if (!p) return;
+                selectedProductId = productId;
+                document.getElementById('poProductId').value = productId;
+                document.getElementById('poProductName').value = p.name;
+                document.getElementById('preorderFormProduct').textContent = p.name + ' — ' + formatPrice(p.price);
+                document.getElementById('poDeliveryEstimate').textContent = '4–6 weeks';
+                document.getElementById('preorderForm').reset();
+                document.getElementById('poSize').value = '';
+                document.getElementById('poQty').value = '1';
+                document.getElementById('preorderForm').style.display = 'block';
+                document.getElementById('preorderConfirm').classList.add('hidden');
+                document.getElementById('preorderFormModal').classList.add('open');
+            }
+
+            function submitPreorder(formData) {
+                const ref = generateRef();
+                const order = {
+                    ref,
+                    productId: formData.productId,
+                    productName: formData.productName,
+                    size: formData.size,
+                    quantity: parseInt(formData.quantity),
+                    name: formData.name,
+                    phone: formData.phone,
+                    email: formData.email,
+                    notes: formData.notes || '',
+                    date: new Date().toISOString(),
+                    status: 'pre-order'
+                };
+                preOrders.push(order);
+                savePreOrders();
+                document.getElementById('poRefNumber').textContent = ref;
+                document.getElementById('preorderForm').style.display = 'none';
+                document.getElementById('preorderConfirm').classList.remove('hidden');
+                showToast('Pre-order placed! Reference: ' + ref);
+            }
+
+            // ================================================================
+            //  CHECKOUT
+            // ================================================================
+            function placeOrder(formData) {
+                if (cart.length === 0) { showToast('Your cart is empty.'); return; }
+                const orderNumber = generateRef();
+                const items = cart.map(i => ({ ...i }));
+                const total = getCartSubtotal() + DELIVERY_FEE;
+                const order = {
+                    orderNumber,
+                    customer: formData.name,
+                    phone: formData.phone,
+                    email: formData.email,
+                    address: formData.address,
+                    city: formData.city,
+                    notes: formData.notes || '',
+                    items,
+                    subtotal: getCartSubtotal(),
+                    delivery: DELIVERY_FEE,
+                    total,
+                    date: new Date().toISOString()
+                };
+                orders.push(order);
+                saveOrders();
+
+                // Show confirmation
+                document.getElementById('checkoutForm').style.display = 'none';
+                document.getElementById('orderConfirmation').classList.remove('hidden');
+                document.getElementById('confirmName').textContent = formData.name;
+                document.getElementById('confirmOrderNumber').textContent = orderNumber;
+                document.getElementById('confirmTotal').textContent = formatPrice(total);
+                document.getElementById('confirmDelivery').textContent = formData.address + ', ' + formData.city;
+
+                const itemsHtml = items.map(item => {
+                    const p = getProduct(item.productId);
+                    return `<div class="flex justify-between text-sm"><span>${p ? p.name : 'Product'} × ${item.quantity} (${item.size})</span><span>${formatPrice(item.price * item.quantity)}</span></div>`;
+                }).join('');
+                document.getElementById('confirmItems').innerHTML = itemsHtml;
+
+                // WhatsApp data
+                let msg =
+                    `🛍️ *Order Confirmation*%0A%0A*Order:* ${orderNumber}%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Delivery:* ${formData.address}, ${formData.city}%0A%0A*Items:*%0A`;
+                items.forEach(item => {
+                    const p = getProduct(item.productId);
+                    msg += `- ${p ? p.name : 'Product'} × ${item.quantity} (${item.size}) — ${formatPrice(item.price * item.quantity)}%0A`;
+                });
+                msg += `%0A*Total:* ${formatPrice(total)}%0A*Delivery Fee:* ${formatPrice(DELIVERY_FEE)}%0A%0AThank you!`;
+                document.getElementById('confirmWhatsAppBtn').onclick = () => {
+                    const url =
+                        `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(msg.replace(/%0A/g, '\n'))}`;
+                    window.open(url, '_blank');
+                };
+
+                cart = [];
+                saveCart();
+                mountCart();
+                showToast('Order placed! #' + orderNumber);
+            }
+
+            // ================================================================
+            //  WHATSAPP HELPER
+            // ================================================================
+            function orderViaWhatsApp() {
+                if (cart.length === 0) { showToast('Cart is empty.'); return; }
+                const name = prompt('Your name for the order:');
+                if (!name) return;
+                const address = prompt('Delivery address:');
+                if (!address) return;
+                let msg =
+                    `🛍️ *New Order*%0A%0A*Name:* ${name}%0A*Address:* ${address}%0A%0A*Items:*%0A`;
+                cart.forEach(item => {
+                    const p = getProduct(item.productId);
+                    msg += `- ${p ? p.name : 'Product'} × ${item.quantity} (${item.size}) — ${formatPrice(item.price * item.quantity)}%0A`;
+                });
+                const total = getCartSubtotal() + DELIVERY_FEE;
+                msg += `%0A*Total:* ${formatPrice(total)}%0A*Delivery:* ${formatPrice(DELIVERY_FEE)}%0A%0AThank you!`;
+                const url =
+                    `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(msg.replace(/%0A/g, '\n'))}`;
+                window.open(url, '_blank');
+            }
+
+            // ================================================================
+            //  EVENT DELEGATION
+            // ================================================================
+            document.addEventListener('click', function(e) {
+                const target = e.target.closest('button, a, span, div');
+                if (!target) return;
+
+                // ─── Navigation ───
+                const navLink = target.closest('.nav-link');
+                if (navLink && navLink.dataset.page) {
+                    e.preventDefault();
+                    const page = navLink.dataset.page;
+                    const filter = navLink.dataset.filter;
+                    if (page === 'cart') {
+                        openCart();
+                        return;
+                    }
+                    showPage(page, filter ? { filter } : {});
+                    return;
+                }
+
+                // ─── Footer nav ───
+                const footerLink = target.closest('[data-page]');
+                if (footerLink && footerLink.dataset.page && footerLink.closest('footer')) {
+                    e.preventDefault();
+                    showPage(footerLink.dataset.page);
+                    return;
+                }
+
+                // ─── Logo ───
+                if (target.closest('#logoLink')) {
+                    e.preventDefault();
+                    showPage('home');
+                    return;
+                }
+
+                // ─── Shop now buttons ───
+                if (target.closest('.shop-now-btn')) {
+                    e.preventDefault();
+                    showPage('shop');
+                    return;
+                }
+
+                // ─── Pre-order nav ───
+                if (target.closest('.preorder-nav-btn')) {
+                    e.preventDefault();
+                    showPage('preorder');
+                    return;
+                }
+
+                // ─── Category cards ───
+                const catCard = target.closest('.cat-card');
+                if (catCard) {
+                    e.preventDefault();
+                    const filter = catCard.dataset.filter;
+                    showPage('shop', { filter });
+                    return;
+                }
+
+                // ─── Filter pills ───
+                const filterPill = target.closest('.filter-pill');
+                if (filterPill) {
+                    e.preventDefault();
+                    currentFilter = filterPill.dataset.filter;
+                    mountShop();
+                    return;
+                }
+
+                // ─── View Details ───
+                const viewBtn = target.closest('.view-details-btn');
+                if (viewBtn) {
+                    e.preventDefault();
+                    const id = viewBtn.dataset.id;
+                    const p = getProduct(id);
+                    if (p) {
+                        selectedProductId = id;
+                        selectedSize = null;
+                        document.getElementById('modalBody').innerHTML = renderProductModal(p);
+                        document.getElementById('productModal').classList.add('open');
+                        // reset qty
+                        let qty = 1;
+                        const display = document.getElementById('modalQtyDisplay');
+                        const down = document.getElementById('modalQtyDown');
+                        const up = document.getElementById('modalQtyUp');
+                        if (display) display.textContent = qty;
+                        if (down) down.onclick = () => { if (qty > 1) { qty--;
+                                display.textContent = qty; } };
+                        if (up) up.onclick = () => { if (qty < 10) { qty++;
+                                display.textContent = qty; } };
+                        // size selection
+                        document.querySelectorAll('#modalSizes .size-btn').forEach(btn => {
+                            btn.onclick = () => {
+                                document.querySelectorAll('#modalSizes .size-btn').forEach(b => b.classList
+                                    .remove('selected'));
+                                btn.classList.add('selected');
+                                selectedSize = btn.dataset.size;
+                                document.getElementById('modalSizeError').classList.add('hidden');
+                            };
+                        });
+                        // modal add to cart
+                        const addBtn = document.getElementById('modalAddToCartBtn');
+                        if (addBtn) {
+                            addBtn.onclick = () => {
+                                if (!selectedSize) {
+                                    document.getElementById('modalSizeError').classList.remove('hidden');
+                                    return;
+                                }
+                                if (addToCart(id, selectedSize, qty)) {
+                                    document.getElementById('productModal').classList.remove('open');
+                                }
+                            };
+                        }
+                        // modal preorder
+                        const poBtn = document.getElementById('modalPreorderBtn');
+                        if (poBtn) {
+                            poBtn.onclick = () => {
+                                if (!selectedSize) {
+                                    document.getElementById('modalSizeError').classList.remove('hidden');
+                                    return;
+                                }
+                                document.getElementById('productModal').classList.remove('open');
+                                openPreorderForm(id);
+                            };
+                        }
+                    }
+                    return;
+                }
+
+                // ─── Add to Cart (card) ───
+                const addBtn = target.closest('.add-to-cart-btn');
+                if (addBtn) {
+                    e.preventDefault();
+                    const id = addBtn.dataset.id;
+                    const card = addBtn.closest('.product-card');
+                    const selected = card ? card.querySelector('.size-btn.selected') : null;
+                    const size = selected ? selected.dataset.size : null;
+                    if (!size) {
+                        // try to auto-select first size
+                        const first = card ? card.querySelector('.size-btn') : null;
+                        if (first) {
+                            first.classList.add('selected');
+                            addToCart(id, first.dataset.size);
+                        } else {
+                            showToast('Please select a size.');
+                        }
+                        return;
+                    }
+                    addToCart(id, size);
+                    return;
+                }
+
+                // ─── Size selection (card) ───
+                const sizeBtn = target.closest('.size-btn');
+                if (sizeBtn && sizeBtn.closest('.product-card')) {
+                    e.preventDefault();
+                    const container = sizeBtn.closest('.sizes-container');
+                    if (container) {
+                        container.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+                        sizeBtn.classList.add('selected');
+                    }
+                    return;
+                }
+
+                // ─── Pre-order button (card) ───
+                const poBtn2 = target.closest('.preorder-btn');
+                if (poBtn2) {
+                    e.preventDefault();
+                    const id = poBtn2.dataset.id;
+                    const card = poBtn2.closest('.product-card');
+                    const selected = card ? card.querySelector('.size-btn.selected') : null;
+                    if (!selected) {
+                        showToast('Please select a size.');
+                        return;
+                    }
+                    selectedSize = selected.dataset.size;
+                    openPreorderForm(id);
+                    return;
+                }
+
+                // ─── Cart icon ───
+                if (target.closest('#cartIconBtn')) {
+                    e.preventDefault();
+                    openCart();
+                    return;
+                }
+
+                // ─── Close cart ───
+                if (target.closest('#closeCartBtn') || target.closest('#cartBackdrop')) {
+                    closeCart();
+                    return;
+                }
+
+                // ─── Checkout from cart ───
+                if (target.closest('#checkoutBtn')) {
+                    e.preventDefault();
+                    if (cart.length === 0) { showToast('Cart is empty.'); return; }
+                    closeCart();
+                    showPage('checkout');
+                    return;
+                }
+
+                // ─── Clear cart ───
+                if (target.closest('#clearCartBtn')) {
+                    e.preventDefault();
+                    clearCart();
+                    return;
+                }
+
+                // ─── Cart qty down ───
+                const qtyDown = target.closest('.cart-qty-down');
+                if (qtyDown) {
+                    e.preventDefault();
+                    const item = qtyDown.closest('.cart-item');
+                    if (item) {
+                        updateCartQty(item.dataset.id, item.dataset.size, -1);
+                    }
+                    return;
+                }
+
+                // ─── Cart qty up ───
+                const qtyUp = target.closest('.cart-qty-up');
+                if (qtyUp) {
+                    e.preventDefault();
+                    const item = qtyUp.closest('.cart-item');
+                    if (item) {
+                        updateCartQty(item.dataset.id, item.dataset.size, 1);
+                    }
+                    return;
+                }
+
+                // ─── Cart remove ───
+                const removeBtn = target.closest('.cart-remove-btn');
+                if (removeBtn) {
+                    e.preventDefault();
+                    const item = removeBtn.closest('.cart-item');
+                    if (item) {
+                        removeFromCart(item.dataset.id, item.dataset.size);
+                        showToast('Item removed.');
+                    }
+                    return;
+                }
+
+                // ─── Close modal ───
+                if (target.closest('#closeModalBtn') || (target.closest('.modal-overlay') && target.closest(
+                        '.modal-overlay') === target)) {
+                    document.getElementById('productModal').classList.remove('open');
+                    return;
+                }
+                if (target.closest('#closePreorderFormBtn') || (target.closest('#preorderFormModal') && target
+                        .closest('.modal-overlay') === target)) {
+                    document.getElementById('preorderFormModal').classList.remove('open');
+                    return;
+                }
+
+                // ─── Pre-order confirm close ───
+                if (target.closest('#poCloseConfirm')) {
+                    document.getElementById('preorderFormModal').classList.remove('open');
+                    return;
+                }
+
+                // ─── Hamburger ───
+                if (target.closest('#hamburgerBtn')) {
+                    e.preventDefault();
+                    document.getElementById('navMenu').classList.toggle('open');
+                    return;
+                }
+
+                // ─── WhatsApp floating (could add later) ───
+            });
+
+            // ================================================================
+            //  FORM HANDLING
+            // ================================================================
+
+            // Pre-order form
+            document.getElementById('preorderForm')?.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const data = {
+                    productId: document.getElementById('poProductId').value,
+                    productName: document.getElementById('poProductName').value,
+                    name: document.getElementById('poName').value.trim(),
+                    phone: document.getElementById('poPhone').value.trim(),
+                    email: document.getElementById('poEmail').value.trim(),
+                    size: document.getElementById('poSize').value,
+                    quantity: document.getElementById('poQty').value,
+                    notes: document.getElementById('poNotes').value.trim()
+                };
+                if (!data.name || !data.phone || !data.email || !data.size) {
+                    showToast('Please fill in all required fields.');
+                    return;
+                }
+                submitPreorder(data);
+            });
+
+            // Contact form
+            document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('contactName').value.trim();
+                const email = document.getElementById('contactEmail').value.trim();
+                const msg = document.getElementById('contactMessage').value.trim();
+                if (!name || !email || !msg) { showToast('Please fill in required fields.'); return; }
+                document.getElementById('contactForm').style.display = 'none';
+                document.getElementById('contactConfirm').classList.remove('hidden');
+                showToast('Message sent!');
+            });
+
+            // Checkout form
+            document.getElementById('checkoutForm')?.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const data = {
+                    name: document.getElementById('coName').value.trim(),
+                    phone: document.getElementById('coPhone').value.trim(),
+                    email: document.getElementById('coEmail').value.trim(),
+                    address: document.getElementById('coAddress').value.trim(),
+                    city: document.getElementById('coCity').value.trim(),
+                    notes: document.getElementById('coNotes').value.trim()
+                };
+                if (!data.name || !data.phone || !data.email || !data.address || !data.city) {
+                    showToast('Please fill in all required fields.');
+                    return;
+                }
+                if (cart.length === 0) { showToast('Your cart is empty.'); return; }
+                placeOrder(data);
+            });
+
+            // Newsletter
+            document.getElementById('newsletterBtn')?.addEventListener('click', function() {
+                const email = document.getElementById('newsletterEmail').value.trim();
+                if (!email || !email.includes('@')) { showToast('Please enter a valid email.'); return; }
+                document.getElementById('newsletterMsg').classList.remove('hidden');
+                document.getElementById('newsletterMsg').textContent = '✓ You\'re subscribed! Welcome to FLEXFIT.';
+                document.getElementById('newsletterEmail').value = '';
+                showToast('Subscribed!');
+            });
+
+            document.getElementById('footerNewsletterBtn')?.addEventListener('click', function() {
+                const email = document.getElementById('footerNewsletter').value.trim();
+                if (!email || !email.includes('@')) { showToast('Please enter a valid email.'); return; }
+                document.getElementById('footerNewsletter').value = '';
+                showToast('Subscribed! Check your inbox.');
+            });
+
+            // Search input
+            document.getElementById('shopSearch')?.addEventListener('input', function() {
+                currentSearch = this.value;
+                mountShop();
+            });
+
+            // Sort select
+            document.getElementById('shopSort')?.addEventListener('change', function() {
+                currentSort = this.value;
+                mountShop();
+            });
+
+            // ================================================================
+            //  INIT
+            // ================================================================
+            function init() {
+                mountNav();
+                mountCategories();
+                mountFeaturedProducts();
+                mountPreorder();
+                mountCart();
+                mountFooter();
+                updateCartBadge();
+                // Show home
+                showPage('home');
+            }
+
+            document.addEventListener('DOMContentLoaded', init);
+
+            // Re-mount on page change for checkout summary
+            const origShowPage = showPage;
+            showPage = function(page, data) {
+                origShowPage(page, data);
+                if (page === 'checkout') mountCheckoutSummary();
+                if (page === 'shop') {
+                    document.getElementById('shopSearch').value = currentSearch;
+                    document.getElementById('shopSort').value = currentSort;
+                }
+            };
+
+            console.log('🛍️ FLEXFIT — Move With Confidence');
+            console.log('📦 WhatsApp number:', WHATSAPP_NUMBER);
+            console.log('🛒 Cart items:', cart.length);
+            console.log('📋 Pre-orders:', preOrders.length);
+            console.log('📦 Orders:', orders.length);
+        </script>
+    </body>
+    </html>
